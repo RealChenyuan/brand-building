@@ -3,7 +3,6 @@
 import Image from "next/image";
 import HeroIcon from "../public/assets/hero-card.svg";
 import HeroBg from "../public/assets/hero-bg.svg";
-import NavIcon from "../public/assets/nav-logo.svg";
 import { useRouter } from "next/navigation";
 import Header from "./components/Header";
 
@@ -11,7 +10,7 @@ export default function Home() {
   const route = useRouter();
 
   return (
-    <div className="h-screen bg-background-gray relative overflow-hidden">
+    <div className="h-screen bg-background-gray relative overflow-hidden min-w-[1200px]">
       <Header />
       <div className="heading ml-14 mt-64 flex flex-col gap-6">
         <div className="text-gray-900 text-6xl font-bold tracking-wider leading-tight">
