@@ -220,6 +220,8 @@ export default function Design() {
   const submitHandler = async () => {
     setAnswer("");
     setLogoUrls([]);
+    setChosenName("");
+    setChosenLogo("");
     setIsLoading(true);
     await chat(question);
     setQuestion("");
@@ -401,17 +403,31 @@ export default function Design() {
                       ))}
                     </div>
                   </div>
-                  <button
-                    className="text-brand-green mt-10 cursor-pointer disabled:text-brand-green-tight disabled:cursor-not-allowed"
-                    disabled={!chosenName || !chosenLogo || isPosterLoading}
-                    onClick={createPoster}
-                  >
-                    {isPosterLoading ? (
-                      "生成海报中……"
-                    ) : (
-                      <>一键生成品牌宣传海报&rarr;</>
-                    )}
-                  </button>
+                  <div className="w-full mt-10 text-brand-green flex items-center justify-between">
+                    <button
+                      className="cursor-pointer hover:text-brand-green-tight disabled:text-brand-green-tight disabled:cursor-not-allowed"
+                      disabled={!chosenLogo}
+                      onClick={() =>
+                        downloadFile(
+                          `/image?id=${chosenLogo}`,
+                          `${chosenName}品牌Logo.png`
+                        )
+                      }
+                    >
+                      下载海报
+                    </button>
+                    <button
+                      className="text-brand-green cursor-pointer disabled:text-brand-green-tight disabled:cursor-not-allowed"
+                      disabled={!chosenName || !chosenLogo || isPosterLoading}
+                      onClick={createPoster}
+                    >
+                      {isPosterLoading ? (
+                        "生成海报中……"
+                      ) : (
+                        <>一键生成品牌宣传海报&rarr;</>
+                      )}
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="text-center w-full self-center text-xl text-gray-600">
