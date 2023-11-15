@@ -10,7 +10,7 @@ export default function Home() {
   const route = useRouter();
 
   return (
-    <div className="h-screen bg-background-gray relative overflow-hidden min-w-[1200px]">
+    <div className="h-screen bg-background-gray relative overflow-hidden min-w-[1400px]">
       <Header />
       <div className="heading ml-14 mt-64 flex flex-col gap-6">
         <div className="text-gray-900 text-6xl font-bold tracking-wider leading-tight">
@@ -31,15 +31,15 @@ export default function Home() {
         开始探索
       </a>
       <Image
-        width={1000}
+        width={900}
         height={300}
         src={HeroIcon}
         alt=""
         className="absolute top-40 right-0 z-10"
       />
       <Image
-        width={700}
-        height={700}
+        width={600}
+        height={600}
         src={HeroBg}
         alt=""
         className="absolute top-40 right-20"
