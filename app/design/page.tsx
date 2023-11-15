@@ -136,7 +136,7 @@ export default function Design() {
     const res = await request(params, url);
     const { vcg_common_response, generate_image_infos } = res || {};
     const { result_code: resultCode } = vcg_common_response || {};
-    const imageIds = generate_image_infos.map((item: any) => item.image?.key);
+    const imageIds = generate_image_infos?.map((item: any) => item.image?.key);
     return { resultCode, imageIds };
   };
 
@@ -180,7 +180,7 @@ export default function Design() {
     const res = await request(params, url);
     const { vcg_common_response, generate_image_infos } = res || {};
     const { result_code: resultCode } = vcg_common_response || {};
-    const imageIds = generate_image_infos.map((item: any) => item.image?.key);
+    const imageIds = generate_image_infos?.map((item: any) => item.image?.key);
     return { resultCode, imageIds };
   };
 
@@ -206,10 +206,10 @@ export default function Design() {
         : await draw(taskId, prompt, imageCount, width, height);
       if (resultCode === 0) {
         if (imageKey) {
-          setPosterUrl(imageIds);
+          imageIds && setPosterUrl(imageIds);
           setIsPosterLoading(false);
         } else {
-          setLogoUrls(imageIds);
+          imageIds && setLogoUrls(imageIds);
           setIsLoading(false);
         }
         clearInterval(timer);
@@ -294,8 +294,9 @@ export default function Design() {
             />
           )}
           <button
-            className="bg-brand-green text-white px-4 py-2 text-lg w-full mt-5 hover:bg-brand-green-tight active:bg-brand-green-tight"
+            className="bg-brand-green text-white px-4 py-2 text-lg w-full mt-5 hover:bg-brand-green-tight active:bg-brand-green-tight disabled:cursor-not-allowed disabled:bg-brand-green-tight"
             onClick={submitHandler}
+            disabled={isLoading || isPosterLoading}
           >
             开始设计
           </button>
@@ -319,7 +320,12 @@ export default function Design() {
                 </div>
                 <div
                   className="cursor-pointer hover:text-brand-green-tight"
-                  onClick={() => downloadFile(`/image?id=${posterUrl[0]}`)}
+                  onClick={() =>
+                    downloadFile(
+                      `/image?id=${posterUrl[0]}`,
+                      `${chosenName}品牌宣传海报.png`
+                    )
+                  }
                 >
                   下载海报
                 </div>
@@ -339,7 +345,7 @@ export default function Design() {
                         JSON.parse(answer).map(
                           (name: string, index: number) => {
                             const names = name.split(".");
-                            const brandName = names[names.length - 1];
+                            const brandName = names[names.length - 1].trim();
 
                             return (
                               <div key={index} className="relative">

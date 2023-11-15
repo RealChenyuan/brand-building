@@ -1,52 +1,24 @@
-function forceDownload(blob: any, filename: string) {
-  var a = document.createElement("a");
-  a.download = filename;
-  a.href = blob;
-  // For Firefox https://stackoverflow.com/a/32226068
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-// Current blob size limit is around 500MB for browsers
-export function downloadFile(url: string) {
-  // if (!filename) filename = url.split('\\').pop()?.split('/').pop() || '宣传海报.png';
-  const filename = "宣传海报.png";
-
+export function downloadFile(url: string, filename = "宣传海报.png") {
   fetch(url)
     .then((response) => response.json())
-    .then((res) => b64toBlob(res))
-    .then((blob) => {
-      let blobUrl = window.URL.createObjectURL(blob);
-      forceDownload(blobUrl, filename);
+    .then((res) => {
+      var base64 = res.toString(); // imgSrc 就是base64哈
+      var byteCharacters = atob(
+        base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
+      );
+      var byteNumbers = new Array(byteCharacters.length);
+      for (var i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      var blob = new Blob([byteArray], {
+        type: undefined,
+      });
+      var aLink = document.createElement("a");
+      aLink.download = filename; //这里写保存时的图片名称
+      aLink.href = URL.createObjectURL(blob);
+      aLink.click();
+      aLink.remove();
     })
     .catch((e) => console.error(e));
-
-  // fetch(url)
-  //   .then((response) => response.blob())
-  //   .then((blob) => {
-  //     let blobUrl = window.URL.createObjectURL(blob);
-  //     forceDownload(blobUrl, filename);
-  //   })
-  //   .catch((e) => console.error(e));
 }
-
-const b64toBlob = (b64Data: any, contentType = "", sliceSize = 512) => {
-  const byteCharacters = Buffer.from(b64Data, "base64").toString("latin1");
-  const byteArrays = [];
-
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-
-  const blob = new Blob(byteArrays, { type: contentType });
-  return blob;
-};
