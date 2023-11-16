@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
+import ErrorIcon from "../../public/assets/error.svg";
 import IdeaIcon from "../../public/assets/idea.svg";
 import PhotoIcon from "../../public/assets/photo.svg";
 import CheckIcon from "../../public/assets/check.svg";
@@ -56,7 +57,7 @@ export default function Design() {
       biz: "api_test",
       query: `取十个具有创意的品牌名称，返回内容规则如下：
        1. 品牌主题为：${question}
-       2. 回答的格式为数组格式
+       2. 回答的格式为数组格式，即返回数据包含在中括号里
        3. 返回的十个名称不可重复
        4. 品牌名称不超过七个字`,
       session_id: "111",
@@ -220,6 +221,7 @@ export default function Design() {
   };
 
   const submitHandler = async () => {
+    setPosterUrl([]);
     setAnswer("");
     setLogoUrls([]);
     setChosenName("");
@@ -311,9 +313,12 @@ export default function Design() {
               <Image
                 width={896 / 3}
                 height={1152 / 3}
-                src={`https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${posterUrl[0]}`}
+                src={ErrorIcon}
                 alt=""
                 className="rounded-md"
+                loader={() =>
+                  `https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${posterUrl[0]}`
+                }
               />
               <div className="w-full mt-6 text-brand-green flex items-center justify-between">
                 <div
@@ -326,7 +331,7 @@ export default function Design() {
                   className="cursor-pointer hover:text-brand-green-tight"
                   onClick={() =>
                     downloadFile(
-                      `/image?id=${posterUrl[0]}`,
+                      `/api/image?id=${posterUrl[0]}`,
                       `${chosenName}品牌宣传海报.png`
                     )
                   }
@@ -383,9 +388,12 @@ export default function Design() {
                           <Image
                             width={100}
                             height={100}
-                            src={`https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${url}`}
+                            src={ErrorIcon}
                             alt=""
                             className="rounded-md cursor-pointer"
+                            loader={() =>
+                              `https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${url}`
+                            }
                             onClick={() =>
                               setChosenLogo((currentKey) =>
                                 currentKey === url ? "" : url
@@ -411,7 +419,7 @@ export default function Design() {
                       disabled={!chosenLogo}
                       onClick={() =>
                         downloadFile(
-                          `/image?id=${chosenLogo}`,
+                          `/api/image?id=${chosenLogo}`,
                           `${chosenName}品牌Logo.png`
                         )
                       }
