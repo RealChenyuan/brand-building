@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import IdeaIcon from "../../public/assets/idea.svg";
 import PhotoIcon from "../../public/assets/photo.svg";
 import CheckIcon from "../../public/assets/check.svg";
-import { downloadFile } from "../utils/helpers";
+import { answerFormatter, downloadFile } from "../utils/helpers";
 
 const getToken = async () => {
   const res = await fetch(
@@ -54,9 +54,11 @@ export default function Design() {
       req_id: "111",
       query_history: queryHistory,
       biz: "api_test",
-      query:
-        "请帮我根据以下主题取十个具有创意的品牌名称，并以数组形式返回，不要给名字加序号，关键词如下：" +
-        question,
+      query: `取十个具有创意的品牌名称，返回内容规则如下：
+       1. 品牌主题为：${question}
+       2. 回答的格式为数组格式
+       3. 返回的十个名称不可重复
+       4. 品牌名称不超过七个字`,
       session_id: "111",
       config: {},
     };
@@ -344,7 +346,7 @@ export default function Design() {
                   <div className="flex justify-between">
                     <div className="grid grid-cols-2 gap-3 px-16 border-r-2 border-brand-green">
                       {answer &&
-                        JSON.parse(answer).map(
+                        answerFormatter(answer).map(
                           (name: string, index: number) => {
                             const names = name.split(".");
                             const brandName = names[names.length - 1].trim();

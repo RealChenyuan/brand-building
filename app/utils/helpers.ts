@@ -22,3 +22,26 @@ export function downloadFile(url: string, filename = "宣传海报.png") {
     })
     .catch((e) => console.error(e));
 }
+
+export function isJSON(str: any) {
+  if (typeof str == "string") {
+    try {
+      var obj = JSON.parse(str);
+      if (typeof obj == "object" && obj) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
+}
+
+export function answerFormatter(str: any) {
+  if (isJSON(str)) return JSON.parse(str);
+  const formatStr = `[${str.split("[")[1].split("]")[0]}]`;
+  if (isJSON(formatStr)) return JSON.parse(formatStr);
+  return ["出错了，请重新生成品牌名称"];
+}
