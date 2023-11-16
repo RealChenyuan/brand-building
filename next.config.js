@@ -7,6 +7,9 @@ const nextConfig = {
         hostname: "bs3-hb1.corp.kuaishou.com",
       },
     ],
+    domains: [
+      "images.ctfassets.net",
+    ],
   },
 };
 
