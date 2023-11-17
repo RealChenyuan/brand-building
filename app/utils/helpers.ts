@@ -1,5 +1,7 @@
 export function downloadFile(url: string, filename = "宣传海报.png") {
-  fetch(url)
+  const API_BASE_URL = getBaseUrl();
+
+  fetch(`${API_BASE_URL}${url}`)
     .then((response) => response.json())
     .then((res) => {
       var base64 = res.toString(); // imgSrc 就是base64哈
@@ -45,3 +47,11 @@ export function answerFormatter(str: any) {
   if (isJSON(formatStr)) return JSON.parse(formatStr);
   return ["出错了，请重新生成品牌名称"];
 }
+
+export const getBaseUrl = () => {
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+
+  return process.env.NEXT_PUBLIC_VERCEL_URL;
+};
