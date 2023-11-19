@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -7,12 +5,7 @@ export async function GET(request: NextRequest) {
   const id = searchParams.get("id");
 
   const res = await fetch(
-    `https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${id}`,
-    {
-      headers: {
-        responseType: "arrayBuffer",
-      },
-    }
+    `https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${id}`
   );
 
   const imgBuffer = await res.arrayBuffer();
