@@ -43,9 +43,11 @@ export function isJSON(str: any) {
 
 export function answerFormatter(str: any) {
   if (isJSON(str)) return JSON.parse(str);
-  const formatStr = `[${str.split("[")[1].split("]")[0]}]`;
-  if (isJSON(formatStr)) return JSON.parse(formatStr);
-  return ["出错了，请重新生成品牌名称"];
+  if (str.indexOf("[") !== -1 && str.indexOf("]") !== -1) {
+    const formatStr = `[${str.split("[")[1].split("]")[0]}]`;
+    if (isJSON(formatStr)) return JSON.parse(formatStr);
+  }
+  return false;
 }
 
 export const getBaseUrl = () => {

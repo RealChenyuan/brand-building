@@ -4,9 +4,12 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
 
-  const res = await fetch(
-    `https://bs3-hb1.corp.kuaishou.com/mmu-aiplatform-temp/${id}`
-  );
+  const API_BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? "https://bs3-hb1.corp.kuaishou.com"
+      : "http://bs3-hb1.internal";
+
+  const res = await fetch(`${API_BASE_URL}/mmu-aiplatform-temp/${id}`);
 
   const imgBuffer = await res.arrayBuffer();
 

@@ -349,9 +349,9 @@ export default function Design() {
               ) : answer && logoUrls.length > 0 ? (
                 <div className="flex flex-col items-center">
                   <div className="flex justify-between">
-                    <div className="grid grid-cols-2 gap-3 px-16 border-r-2 border-brand-green">
-                      {answer &&
-                        answerFormatter(answer).map(
+                    {answer && answerFormatter(answer) ? (
+                      <div className="grid grid-cols-2 gap-3 px-16 border-r-2 border-brand-green">
+                        {answerFormatter(answer).map(
                           (name: string, index: number) => {
                             const names = name.split(".");
                             const brandName = names[names.length - 1].trim();
@@ -381,7 +381,13 @@ export default function Design() {
                             );
                           }
                         )}
-                    </div>
+                      </div>
+                    ) : (
+                      <div className="self-center px-16">
+                        出错了，请重新生成品牌名
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 px-16">
                       {logoUrls.map((url, index) => (
                         <div key={index} className="relative">
