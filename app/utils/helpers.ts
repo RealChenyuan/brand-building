@@ -47,7 +47,10 @@ export function answerFormatter(str: any) {
     const formatStr = `[${str.split("[")[1].split("]")[0]}]`;
     if (isJSON(formatStr)) return JSON.parse(formatStr);
   }
-  return false;
+  const formatStr = str
+    .split("\n")
+    .filter((str: any) => str.split(".").length > 1);
+  return formatStr;
 }
 
 export const getBaseUrl = () => {
